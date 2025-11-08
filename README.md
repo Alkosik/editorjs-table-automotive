@@ -6,6 +6,8 @@ The Table Block for the [Editor.js](https://editorjs.io). Improved for use in au
 
 ![](assets/68747470733a2f2f636170656c6c612e706963732f34313239346365632d613262332d343135372d383339392d6666666665643364386666642e6a7067.jpeg)
 
+> This is my first public package so pls be understanding
+
 ## Installation
 
 Get the package
