@@ -1,213 +1,352 @@
 /* tc- project's prefix*/
 .tc-wrap {
-  --color-background: #f9f9fb;
-  --color-text-secondary: #7b7e89;
-  --color-border: #e8e8eb;
-  --cell-size: 34px;
-  --toolbox-icon-size: 18px;
-  --toolbox-padding: 6px;
-  --toolbox-aiming-field-size: calc(
-    var(--toolbox-icon-size) + 2 * var(--toolbox-padding)
-  );
+	--color-background: #f9f9fb;
+	--color-text-secondary: #7b7e89;
+	--color-border: #e8e8eb;
+	--cell-size: 34px;
+	--toolbox-icon-size: 18px;
+	--toolbox-padding: 6px;
+	--toolbox-aiming-field-size: calc(
+		var(--toolbox-icon-size) + 2 * var(--toolbox-padding)
+	);
 
-  border-left: 0px;
-  position: relative;
-  height: 100%;
-  width: 100%;
-  margin-top: var(--toolbox-icon-size);
-  box-sizing: border-box;
-  display: grid;
-  grid-template-columns: calc(100% - var(--cell-size)) var(--cell-size);
-  /* Bug-fix: https://github.com/editor-js/table/issues/175 */
-  z-index: 0;
+	border-left: 0px;
+	position: relative;
+	height: 100%;
+	width: 100%;
+	margin-top: var(--toolbox-icon-size);
+	box-sizing: border-box;
+	display: grid;
+	grid-template-columns: calc(100% - var(--cell-size)) var(--cell-size);
+	/* Bug-fix: https://github.com/editor-js/table/issues/175 */
+	z-index: 0;
 
-  &--readonly {
-    grid-template-columns: 100% var(--cell-size);
-  }
+	&--readonly {
+		grid-template-columns: 100% var(--cell-size);
+	}
 
-  svg {
-    vertical-align: top;
-  }
+	&--with-axis-titles {
+		padding-left: 5px;
+		margin-top: calc(var(--toolbox-icon-size) + 25px);
+	}
 
-  @media print {
-    border-left: 1px solid var(--color-border);
-    grid-template-columns: 100% var(--cell-size);
-  }
+	svg {
+		vertical-align: top;
+	}
 
-  .tc-row::after {
-    @media print {
-      display: none;
-    }
-  }
+	@media print {
+		border-left: 1px solid var(--color-border);
+		grid-template-columns: 100% var(--cell-size);
+	}
+
+	.tc-row::after {
+		@media print {
+			display: none;
+		}
+	}
 }
 
 .tc-table {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: grid;
-  font-size: 14px;
-  border-top: 1px solid var(--color-border);
-  line-height: 1.4;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: grid;
+	font-size: 14px;
+	border-top: 1px solid var(--color-border);
+	line-height: 1.4;
 
-  &::after {
-    position: absolute;
-    content: "";
-    width: calc(var(--cell-size));
-    height: 100%;
-    left: calc(-1 * var(--cell-size));
-    top: 0;
-  }
+	&::after {
+		position: absolute;
+		content: '';
+		width: calc(var(--cell-size));
+		height: 100%;
+		left: calc(-1 * var(--cell-size));
+		top: 0;
+	}
 
-  &::before {
-    position: absolute;
-    content: "";
-    width: 100%;
-    height: var(--toolbox-aiming-field-size);
-    top: calc(-1 * var(--toolbox-aiming-field-size));
-    left: 0;
-  }
+	&::before {
+		position: absolute;
+		content: '';
+		width: 100%;
+		height: var(--toolbox-aiming-field-size);
+		top: calc(-1 * var(--toolbox-aiming-field-size));
+		left: 0;
+	}
 
-  &--heading {
-    & .tc-row:first-child {
-      font-weight: 600;
-      border-bottom: 2px solid var(--color-border);
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      background: var(--color-background);
-      & [contenteditable]:empty::before {
-        content: attr(heading);
-        color: var(--color-text-secondary);
-      }
+	.tc-wrap--with-axis-titles &::before {
+		/* No need to adjust - the horizontal title provides its own aiming space */
+		top: calc(-1 * var(--toolbox-aiming-field-size));
+	}
 
-      &::after {
-        bottom: -2px;
-        border-bottom: 2px solid var(--color-border);
-      }
-    }
-  }
+	&--heading {
+		& .tc-row:first-child {
+			border-bottom: 2px solid var(--color-border);
+			position: sticky;
+			top: 0;
+			z-index: 2;
+			background: var(--color-background);
+			& [contenteditable]:empty::before {
+				content: attr(heading);
+				color: var(--color-text-secondary);
+			}
+		}
+	}
+
+	&--column-headings {
+		& .tc-row .tc-cell:first-child {
+			border-right: 2px solid var(--color-border);
+			position: sticky;
+			left: 0;
+			z-index: 1;
+			background: var(--color-background);
+			& [contenteditable]:empty::before {
+				content: attr(heading);
+				color: var(--color-text-secondary);
+			}
+		}
+	}
+
+	&--both-headings {
+		& .tc-row:first-child .tc-cell:first-child {
+			z-index: 3; /* Higher than both row and column headings */
+			border-right: 2px solid var(--color-border);
+			font-weight: 600; /* Only bold the top-left cell when both headings are enabled */
+		}
+	}
 }
 
 .tc-add {
-  &-column,
-  &-row {
-    display: flex;
-    color: var(--color-text-secondary);
-  }
+	&-column,
+	&-row {
+		display: flex;
+		color: var(--color-text-secondary);
+	}
 
-  @media print {
-    display: none;
-  }
+	@media print {
+		display: none;
+	}
 }
 
 .tc-add-column {
-  display: grid;
-  border-top: 1px solid var(--color-border);
-  grid-template-columns: var(--cell-size);
-  grid-auto-rows: var(--cell-size);
-  place-items: center;
-  svg {
-    padding: 5px;
-    position: sticky;
-    top: 0;
-    background-color: var(--color-background);
-  }
+	display: grid;
+	grid-template-columns: var(--cell-size);
+	grid-auto-rows: var(--cell-size);
+	place-items: center;
+	border: none;
+	svg {
+		padding: 5px;
+		position: sticky;
+		top: 0;
+	}
 
-  &--disabled {
-    visibility: hidden;
-  }
+	&--disabled {
+		visibility: hidden;
+	}
 
-  @media print {
-    display: none;
-  }
+	@media print {
+		display: none;
+	}
 }
 
 .tc-add-row {
-  height: var(--cell-size);
-  align-items: center;
-  padding-left: 4px;
-  position: relative;
-  &--disabled {
-    display: none;
-  }
+	height: var(--cell-size);
+	align-items: center;
+	padding-left: 2px;
+	position: relative;
+	&--disabled {
+		display: none;
+	}
 
-  &::before {
-    content: "";
-    position: absolute;
-    right: calc(-1 * var(--cell-size));
-    width: var(--cell-size);
-    height: 100%;
-  }
+	&::before {
+		content: '';
+		position: absolute;
+		right: calc(-1 * var(--cell-size));
+		width: var(--cell-size);
+		height: 100%;
+	}
 
-  @media print {
-    display: none;
-  }
+	@media print {
+		display: none;
+	}
 }
 
 .tc-add {
-  &-column,
-  &-row {
-    transition: 0s;
-    cursor: pointer;
-    will-change: background-color;
+	&-column,
+	&-row {
+		transition: 0s;
+		cursor: pointer;
+		will-change: background-color;
 
-    &:hover {
-      transition: background-color 0.1s ease;
-      background-color: var(--color-background);
-    }
-  }
+		&:hover {
+			transition: background-color 0.1s ease;
+			background-color: var(--color-background);
+		}
+	}
 
-  &-row {
-    margin-top: 1px;
+	&-row {
+		margin-top: 1px;
 
-    &:hover::before {
-      transition: 0.1s;
-      background-color: var(--color-background);
-    }
-  }
+		&:hover::before {
+			transition: 0.1s;
+			background-color: var(--color-background);
+		}
+	}
 }
 
 .tc-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10px, 1fr));
-  position: relative;
-  border-bottom: 1px solid var(--color-border);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(10px, 1fr));
+	position: relative;
+	border-bottom: 1px solid var(--color-border);
 
-  &::after {
-    content: "";
-    pointer-events: none;
-    position: absolute;
-    width: var(--cell-size);
-    height: 100%;
-    bottom: -1px;
-    right: calc(-1 * var(--cell-size));
-    border-bottom: 1px solid var(--color-border);
-  }
+	&::after {
+		content: '';
+		pointer-events: none;
+		position: absolute;
+		width: var(--cell-size);
+		height: 100%;
+		bottom: -1px;
+		right: calc(-1 * var(--cell-size));
+	}
 
-  &--selected {
-    background: var(--color-background);
-  }
+	&--selected {
+		background: var(--color-background);
+	}
 }
 
 .tc-row--selected {
-  &::after {
-    background: var(--color-background);
-  }
+	&::after {
+		background: var(--color-background);
+	}
 }
 
 .tc-cell {
-  border-right: 1px solid var(--color-border);
-  padding: 6px 12px 6px 12px;
-  overflow: hidden;
-  outline: none;
-  line-break: normal;
+	border-right: 1px solid var(--color-border);
+	padding: 6px 12px 6px 12px;
+	overflow: hidden;
+	outline: none;
+	line-break: normal;
+	transition: background-color 0.2s ease;
 
-  &--selected {
-    background: var(--color-background);
-  }
+	&:first-child {
+		border-left: 1px solid var(--color-border);
+	}
+
+	&--selected {
+		background: var(--color-background);
+	}
 }
 
 .tc-wrap--readonly .tc-row::after {
-  display: none;
+	display: none;
+}
+
+/* Automotive mode styles */
+.tc-table--automotive {
+	.tc-cell {
+		font-weight: 500;
+		text-align: center;
+	}
+}
+
+/* Table title styles */
+.tc-table-title {
+	font-weight: 700;
+	font-size: 18px;
+	padding-top: 2px;
+	outline: none;
+	color: #000;
+	user-select: text;
+	text-align: left;
+	border-bottom: 2px solid var(--color-border);
+	width: 100%;
+	display: block;
+
+	&:focus {
+		color: #000;
+	}
+
+	&:empty::before {
+		content: attr(data-placeholder);
+		color: var(--color-text-secondary);
+		opacity: 0.6;
+	}
+}
+
+/* Axis title styles */
+.tc-axis-title {
+	font-weight: 600;
+	font-size: 14px;
+	padding: 8px 12px;
+	outline: none;
+	color: var(--color-text-secondary);
+	user-select: text;
+	line-height: normal;
+
+	&--horizontal {
+		position: absolute;
+		top: -50px;
+		left: 0;
+		right: 0;
+		text-align: center;
+		z-index: 1;
+	}
+
+	&--vertical {
+		writing-mode: vertical-lr;
+		transform: rotate(180deg);
+		text-align: center;
+		position: absolute;
+		left: -50px;
+		top: 50%;
+		transform: translateY(-50%) rotate(180deg);
+		height: auto;
+		max-height: 80%;
+		padding: 8px 4px;
+	}
+
+	&:focus {
+		color: #000;
+	}
+
+	&:empty::before {
+		content: attr(data-placeholder);
+		color: var(--color-text-secondary);
+		opacity: 0.6;
+	}
+}
+
+/* Enhanced cell styling for automotive mode with gradients */
+.tc-table--automotive .tc-cell {
+	position: relative;
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		opacity: 0;
+		transition: opacity 0.2s ease;
+		pointer-events: none;
+		border: 2px solid rgba(255, 255, 255, 0.3);
+	}
+
+	&:hover::after {
+		opacity: 1;
+	}
+}
+
+/* Print styles for automotive features */
+@media print {
+	.tc-axis-title {
+		print-color-adjust: exact;
+		-webkit-print-color-adjust: exact;
+	}
+
+	.tc-table--automotive .tc-cell {
+		print-color-adjust: exact;
+		-webkit-print-color-adjust: exact;
+	}
 }

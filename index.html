@@ -1,89 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Automotive Table Plugin - Demo</title>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Test of a New Beautiful Table</title>
+		<style>
+			body,
+			html {
+				margin: 0;
+				font-family: Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+					Helvetica Neue, sans-serif;
+				background: #f5f5f5;
+			}
 
-  <style>
-    body,
-    html {
-      margin: 0;
-      font-family: Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    }
+			body {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				padding: 20px;
+			}
 
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+			.header {
+				width: 900px;
+				margin-bottom: 20px;
+			}
 
-    .block {
-      width: 800px;
-      margin-top: 40px;
-    }
+			.header h1 {
+				margin: 0 0 10px 0;
+				color: #333;
+			}
 
-    #editorjs {
-      width: 900px;
-      min-height: 100px;
-    }
-  </style>
+			.header p {
+				margin: 0;
+				color: #666;
+				font-size: 14px;
+			}
 
-</head>
+			#editorjs {
+				width: 900px;
+				min-height: 100px;
+				background: white;
+				border-radius: 8px;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+				padding: 20px;
+			}
 
-<body>
+			.controls {
+				width: 900px;
+				margin-top: 20px;
+				display: flex;
+				gap: 10px;
+			}
 
-  <div class="block"></div>
-  <div id="editorjs"></div>
+			.save-button {
+				padding: 10px 20px;
+				background: #4caf50;
+				color: white;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				font-size: 14px;
+			}
 
-  <button class="save-button">Save</button>
-  <pre class="output"></pre>
+			.save-button:hover {
+				background: #45a049;
+			}
 
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+			.output {
+				width: 900px;
+				margin-top: 20px;
+				background: #282c34;
+				color: #abb2bf;
+				padding: 20px;
+				border-radius: 8px;
+				font-family: 'Courier New', monospace;
+				font-size: 12px;
+				overflow-x: auto;
+			}
+		</style>
+	</head>
 
-  <script type="module">
-    import Table from './src/index'
-    const editor = new EditorJS({
-      autofocus: true,
-      tools: {
-        table: {
-          class: Table,
-          inlineToolbar: true,
-          config: {
-            withHeadings: true,
-            maxRows: 5,
-            maxCols: 5
-          }
-        }
-      },
-      data: {
-        time: 1625072989362,
-        blocks: [
-          {
-            id: "XXVTfnMlcE",
-            type: "table",
-            data: {
-              withHeadings: true,
-              content: [
-                ["English", "Russian", "Japanese"], 
-                ["Sweet", "Сладкий", "あまい"], 
-                ["Good morning", "Доброе утро", "おはようございます"]]
-            }
-          }
-        ],
-        version: "2.22.1"
-      }
-    });
+	<body>
+		<div class="header">
+			<h1>Automotive Table Plugin Demo</h1>
+			<p>
+				Engine calibration map with thermal gradient colors and axis titles.
+				Use the settings menu (three dots) to toggle features.
+			</p>
+		</div>
 
-    const saveButton = document.querySelector('.save-button');
-    const output = document.querySelector('.output');
+		<div id="editorjs"></div>
 
-    saveButton.addEventListener('click', () => {
-      editor.save().then(savedData => {
-        output.innerHTML = JSON.stringify(savedData, null, 4);
-      });
-    });
-  </script>
-</body>
+		<div class="controls">
+			<button class="save-button">Save Data</button>
+		</div>
 
+		<pre class="output"></pre>
+
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+
+		<script type="module">
+			import Table from './src/index';
+			const editor = new EditorJS({
+				autofocus: true,
+				tools: {
+					table: {
+						class: Table,
+						inlineToolbar: true,
+						config: {
+							withHeadings: false,
+						},
+					},
+				},
+				data: {
+					time: Date.now(),
+					blocks: [
+						{
+							id: 'automotive-table-demo',
+							type: 'table',
+							data: {
+								withHeadings: 'both',
+								gradientColors: true,
+								colorScheme: 'THERMAL',
+								skipHeadings: true,
+								showTableTitle: true,
+								tableTitle: 'Engine Fuel Map (mg/stroke)',
+								showAxisTitles: true,
+								horizontalTitle: 'Engine Speed (RPM)',
+								verticalTitle: 'Load (%)',
+								content: [
+									[
+										'RPM/Load',
+										'1000',
+										'2000',
+										'3000',
+										'4000',
+										'5000',
+										'6000',
+									],
+									[
+										'20%',
+										'12.5',
+										'13.2',
+										'14.1',
+										'15.3',
+										'16.8',
+										'18.2',
+									],
+									[
+										'40%',
+										'15.8',
+										'16.5',
+										'17.8',
+										'19.2',
+										'21.1',
+										'23.5',
+									],
+									[
+										'60%',
+										'18.9',
+										'20.3',
+										'22.1',
+										'24.5',
+										'27.2',
+										'30.1',
+									],
+									[
+										'80%',
+										'22.4',
+										'24.8',
+										'27.3',
+										'30.8',
+										'34.5',
+										'38.2',
+									],
+									[
+										'100%',
+										'25.7',
+										'28.9',
+										'32.5',
+										'36.8',
+										'41.3',
+										'45.8',
+									],
+								],
+							},
+						},
+						{
+							id: 'smoothing-demo-table',
+							type: 'table',
+							data: {
+								withHeadings: 'both',
+								gradientColors: true,
+								colorScheme: 'AUTOMOTIVE',
+								skipHeadings: true,
+								showTableTitle: true,
+								tableTitle:
+									'Boost Pressure Map (kPa) - with gaps for auto-fill demo',
+								showAxisTitles: true,
+								horizontalTitle: 'Engine Speed (RPM)',
+								verticalTitle: 'Throttle Position (%)',
+								content: [
+									[
+										'RPM/TPS',
+										'1500',
+										'2000',
+										'2500',
+										'3000',
+										'3500',
+										'4000',
+									],
+									['10%', '15', '', '25', '', '35', '40'],
+									['25%', '', '45', '55', '65', '', '85'],
+									['50%', '75', '85', '', '105', '115', '125'],
+									['75%', '105', '', '125', '135', '', '155'],
+									['100%', '135', '145', '155', '', '175', '185'],
+								],
+							},
+						},
+					],
+					version: '2.22.1',
+				},
+			});
+
+			const saveButton = document.querySelector('.save-button');
+			const output = document.querySelector('.output');
+
+			saveButton.addEventListener('click', () => {
+				editor.save().then((savedData) => {
+					output.innerHTML = JSON.stringify(savedData, null, 4);
+				});
+			});
+		</script>
+	</body>
 </html>
