@@ -1,7 +1,7 @@
 {
 	"name": "editorjs-table-automotive",
 	"description": "Table for Editor.js with automotive features: gradient colors, axis & table titles, auto-fill and value smoothing",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"license": "MIT",
 	"repository": "https://github.com/Alkosik/editorjs-table-automotive",
 	"files": [
