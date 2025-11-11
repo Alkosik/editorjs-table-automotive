@@ -1,9 +1,12 @@
 {
 	"name": "editorjs-table-automotive",
 	"description": "Table for Editor.js with automotive features: gradient colors, axis & table titles, auto-fill and value smoothing",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"license": "MIT",
-	"repository": "https://github.com/Alkosik/editorjs-table-automotive",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Alkosik/editorjs-table-automotive.git"
+	},
 	"files": [
 		"dist"
 	],
@@ -20,7 +23,10 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
-		"lint": "eslint -c ./.eslintrc --ext .js --fix ."
+		"lint": "eslint -c ./.eslintrc --ext .js --fix .",
+		"publish:npm": "npm publish --registry=https://registry.npmjs.org/ --access public",
+		"publish:github": "npm publish --registry=https://npm.pkg.github.com/",
+		"publish:all": "npm run publish:npm && npm run publish:github"
 	},
 	"author": {
 		"name": "Alkosik",
